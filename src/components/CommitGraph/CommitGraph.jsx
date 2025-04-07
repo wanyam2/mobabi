@@ -3,7 +3,7 @@ import React from "react";
 export default function CommitGraph({ branches = [] }) {
     return (
         <div style={styles.graphContainer}>
-            <h2 style={styles.title}>Test</h2>
+            <h2 style={styles.title}>Git Commit Graph</h2>
             <div style={styles.graph}>
                 {branches.map((branch, bIndex) => (
                     <div key={branch.name} style={styles.branch}>
@@ -24,7 +24,6 @@ export default function CommitGraph({ branches = [] }) {
         </div>
     );
 }
-
 
 const styles = {
     title: { color: "#fff", marginBottom: "10px" },

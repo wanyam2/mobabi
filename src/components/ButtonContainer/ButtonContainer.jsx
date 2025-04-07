@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import './ButtonContainer.css';
-import { Button, Checkbox, Input, VStack, Box, Step, StepDescription, StepIndicator, StepStatus, StepTitle, Stepper, StepSeparator, Select } from "@chakra-ui/react";
+import { Button, Checkbox, Input, VStack, Box, Step, StepDescription, StepIndicator, StepStatus, StepTitle, Stepper, StepSeparator, Select, useToast } from "@chakra-ui/react";
+import "./ButtonContainer.css";
 
 const steps = [
     { title: "Pull", description: "Pull the latest changes" },
@@ -9,15 +9,12 @@ const steps = [
     { title: "Push", description: "Push changes to repository" },
 ];
 
-function ButtonContainer() {
+function ButtonContainer({ branches, setBranches }) {
     const [activeStep, setActiveStep] = useState(0);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [commitMessage, setCommitMessage] = useState('');
     const [selectedBranch, setSelectedBranch] = useState('main');
-    const [branches, setBranches] = useState([
-        { name: "main", pushedCommits: [{ id: 1, message: "Initial commit" }] },
-        { name: "develop", pushedCommits: [{ id: 1, message: "Started new feature Y" }] },
-    ]);
+    const toast = useToast();
 
     const files = ['file1.js', 'file2.css', 'file3.html'];
 
@@ -53,10 +50,20 @@ function ButtonContainer() {
                     : branch
             )
         );
-        setActiveStep(steps.length); // Push 후 스텝 완료
+
+        toast({
+            title: "Push 완료!",
+            description: "커밋이 원격 저장소로 푸시되었습니다.",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+            position: "bottom-right",
+        });
+
+        setActiveStep(0); // 스텝 초기화
         setSelectedFiles([]);
         setCommitMessage('');
-        setActiveStep(0); // 스텝 초기화
+
     };
 
     return (
