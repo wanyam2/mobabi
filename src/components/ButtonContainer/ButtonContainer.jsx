@@ -16,7 +16,7 @@ function ButtonContainer({ branches, setBranches }) {
     const [selectedBranch, setSelectedBranch] = useState('main');
     const toast = useToast();
 
-    const files = ['file1.js', 'file2.css', 'file3.html'];
+    const files = ['main.ts', 'file2.css', 'file3.html'];
 
     const handleFileSelect = (file) => {
         setSelectedFiles((prev) =>
