@@ -24,17 +24,55 @@ function ButtonContainer({ branches, setBranches }) {
         );
     };
 
-    const handleNext = () => {
-        if (activeStep === 1 && selectedFiles.length === 0) {
-            alert("파일을 선택하세요!");
+    const handleNext = async () => {
+        if (activeStep === 1) {
+            if (selectedFiles.length === 0) {
+                alert("파일을 선택하세요!");
+                return;
+            }
+
+            try {
+                const response = await fetch(`/repos/:id/add`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ files: selectedFiles })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    toast({
+                        title: "Add 성공",
+                        description: `${data.stagedFiles.length}개 파일이 스테이징 되었습니다.`,
+                        status: "success",
+                        duration: 2000,
+                        isClosable: true,
+                    });
+                    setActiveStep(prev => prev + 1);
+                } else {
+                    throw new Error("Add 실패");
+                }
+            } catch (err) {
+                toast({
+                    title: "Add 실패",
+                    description: err.message,
+                    status: "error",
+                    duration: 3000,
+                    isClosable: true,
+                });
+            }
+
             return;
         }
+
         if (activeStep === 2 && commitMessage.trim() === '') {
             alert("커밋 메시지를 입력하세요!");
             return;
         }
-        setActiveStep((prev) => prev + 1);
+
+        setActiveStep(prev => prev + 1);
     };
+
 
     const handlePush = () => {
         setBranches(prevBranches =>
