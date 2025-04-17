@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
-import { Button, Checkbox, Input, VStack, Box, Step, StepDescription, StepIndicator, StepStatus, StepTitle, Stepper, StepSeparator, Select, useToast } from "@chakra-ui/react";
+import {
+    Button, Input, VStack, Box, Step, StepDescription,
+    StepIndicator, StepStatus, StepTitle, Stepper, StepSeparator,
+    Select, useToast, Spinner, Progress
+} from "@chakra-ui/react";
 import "./ButtonContainer.css";
+import AddModal from "../AddModal.jsx";
 
 const steps = [
     { title: "Pull", description: "Pull the latest changes" },
@@ -14,20 +19,36 @@ function ButtonContainer({ branches, setBranches }) {
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [commitMessage, setCommitMessage] = useState('');
     const [selectedBranch, setSelectedBranch] = useState('main');
+    const [isPulling, setIsPulling] = useState(false);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false); // ✅ 모달 상태
     const toast = useToast();
 
-    const files = ['main.ts', 'file2.css', 'file3.html'];
+    // ✅ 파일 상태를 포함한 예시 데이터
+    const files = [
+        { name: 'main.ts', status: '수정됨' },
+        { name: 'file2.css', status: '추가됨' },
+        { name: 'file3.html', status: '수정됨' }
+    ];
 
-    const handleFileSelect = (file) => {
+    const handleFileSelect = (fileName) => {
         setSelectedFiles((prev) =>
-            prev.includes(file) ? prev.filter(f => f !== file) : [...prev, file]
+            prev.includes(fileName)
+                ? prev.filter(f => f !== fileName)
+                : [...prev, fileName]
         );
     };
 
     const handleNext = async () => {
+        // Add 단계
         if (activeStep === 1) {
             if (selectedFiles.length === 0) {
-                alert("파일을 선택하세요!");
+                toast({
+                    title: "파일 선택 필요",
+                    description: "스테이징할 파일을 선택하세요.",
+                    status: "warning",
+                    duration: 2000,
+                    isClosable: true,
+                });
                 return;
             }
 
@@ -65,6 +86,7 @@ function ButtonContainer({ branches, setBranches }) {
             return;
         }
 
+        // Commit 단계
         if (activeStep === 2 && commitMessage.trim() === '') {
             alert("커밋 메시지를 입력하세요!");
             return;
@@ -73,6 +95,20 @@ function ButtonContainer({ branches, setBranches }) {
         setActiveStep(prev => prev + 1);
     };
 
+    const handlePull = () => {
+        setIsPulling(true);
+        setTimeout(() => {
+            toast({
+                title: "Pull 완료",
+                description: "최신 변경 사항을 불러왔습니다.",
+                status: "success",
+                duration: 2000,
+                isClosable: true,
+            });
+            setIsPulling(false);
+            handleNext();
+        }, 2000);
+    };
 
     const handlePush = () => {
         setBranches(prevBranches =>
@@ -98,10 +134,9 @@ function ButtonContainer({ branches, setBranches }) {
             position: "bottom-right",
         });
 
-        setActiveStep(0); // 스텝 초기화
+        setActiveStep(0);
         setSelectedFiles([]);
         setCommitMessage('');
-
     };
 
     return (
@@ -120,17 +155,31 @@ function ButtonContainer({ branches, setBranches }) {
                         {activeStep === index && (
                             <Box mt={4}>
                                 {index === 0 && (
-                                    <Button colorScheme="blue" onClick={handleNext}>Pull</Button>
+                                    <>
+                                        {isPulling ? (
+                                            <VStack>
+                                                <Spinner />
+                                                <Progress size="xs" isIndeterminate colorScheme="blue" w="100%" />
+                                            </VStack>
+                                        ) : (
+                                            <Button colorScheme="blue" onClick={handlePull}>Pull</Button>
+                                        )}
+                                    </>
                                 )}
                                 {index === 1 && (
-                                    <VStack spacing={2} align="start">
-                                        {files.map((file) => (
-                                            <Checkbox key={file} isChecked={selectedFiles.includes(file)} onChange={() => handleFileSelect(file)}>
-                                                {file}
-                                            </Checkbox>
-                                        ))}
-                                        <Button colorScheme="gray" onClick={handleNext}>Add</Button>
-                                    </VStack>
+                                    <>
+                                        <Button colorScheme="gray" onClick={() => setIsAddModalOpen(true)}>Add</Button>
+                                        <AddModal
+                                            isOpen={isAddModalOpen}
+                                            onClose={() => {
+                                                setIsAddModalOpen(false);
+                                                handleNext();
+                                            }}
+                                            files={files}
+                                            selectedFiles={selectedFiles}
+                                            onSelect={handleFileSelect}
+                                        />
+                                    </>
                                 )}
                                 {index === 2 && (
                                     <VStack spacing={2} align="start">
