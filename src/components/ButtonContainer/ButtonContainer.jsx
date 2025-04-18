@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
     Button, Input, VStack, Box, Step, StepDescription,
     StepIndicator, StepStatus, StepTitle, Stepper, StepSeparator,
-    Select, useToast, Spinner, Progress
+    Select, useToast, Spinner, Progress, Text
 } from "@chakra-ui/react";
 import "./ButtonContainer.css";
 import AddModal from "../AddModal.jsx";
@@ -20,10 +20,10 @@ function ButtonContainer({ branches, setBranches }) {
     const [commitMessage, setCommitMessage] = useState('');
     const [selectedBranch, setSelectedBranch] = useState('main');
     const [isPulling, setIsPulling] = useState(false);
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false); // ✅ 모달 상태
+    const [pullData, setPullData] = useState([]); // ✅ Pull된 커밋 데이터를 저장
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const toast = useToast();
 
-    // ✅ 파일 상태를 포함한 예시 데이터
     const files = [
         { name: 'main.ts', status: '수정됨' },
         { name: 'file2.css', status: '추가됨' },
@@ -39,7 +39,6 @@ function ButtonContainer({ branches, setBranches }) {
     };
 
     const handleNext = async () => {
-        // Add 단계
         if (activeStep === 1) {
             if (selectedFiles.length === 0) {
                 toast({
@@ -86,7 +85,6 @@ function ButtonContainer({ branches, setBranches }) {
             return;
         }
 
-        // Commit 단계
         if (activeStep === 2 && commitMessage.trim() === '') {
             alert("커밋 메시지를 입력하세요!");
             return;
@@ -98,6 +96,14 @@ function ButtonContainer({ branches, setBranches }) {
     const handlePull = () => {
         setIsPulling(true);
         setTimeout(() => {
+            // 가상 데이터 생성
+            const newPullData = [
+                { id: 1, message: "Fix bug in feature A", author: "John Doe", date: "2025-04-17" },
+                { id: 2, message: "Add new feature B", author: "Jane Smith", date: "2025-04-16" },
+                { id: 3, message: "Update README", author: "Alice Brown", date: "2025-04-15" },
+            ];
+            setPullData(newPullData);  // 가상 커밋 데이터 설정
+            setIsPulling(false);
             toast({
                 title: "Pull 완료",
                 description: "최신 변경 사항을 불러왔습니다.",
@@ -105,7 +111,6 @@ function ButtonContainer({ branches, setBranches }) {
                 duration: 2000,
                 isClosable: true,
             });
-            setIsPulling(false);
             handleNext();
         }, 2000);
     };
@@ -163,6 +168,18 @@ function ButtonContainer({ branches, setBranches }) {
                                             </VStack>
                                         ) : (
                                             <Button colorScheme="blue" onClick={handlePull}>Pull</Button>
+                                        )}
+                                        {pullData.length > 0 && !isPulling && (
+                                            <Box mt={4}>
+                                                <Text fontSize="lg" fontWeight="bold">가져온 커밋 내역</Text>
+                                                {pullData.map(commit => (
+                                                    <Box key={commit.id} mt={2} padding="2" border="1px" borderColor="gray.200">
+                                                        <Text><strong>{commit.message}</strong></Text>
+                                                        <Text>Author: {commit.author}</Text>
+                                                        <Text>Date: {commit.date}</Text>
+                                                    </Box>
+                                                ))}
+                                            </Box>
                                         )}
                                     </>
                                 )}
