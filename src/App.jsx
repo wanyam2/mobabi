@@ -1,6 +1,8 @@
 import './App.css';
 import BranchContainer from "@/page/BranchContainer/BranchContainer.jsx";
 import ButtonContainer from "@/page/ButtonContainer/ButtonContainer.jsx";
+import LoginPage from "@/page/LoginPage/LoginPage.jsx";
+
 import { ChakraProvider } from '@chakra-ui/react';
 import React, { useState } from 'react';
 
@@ -13,6 +15,7 @@ function App() {
     return (
         <ChakraProvider>
             <div className="App">
+                <LoginPage />
                 <BranchContainer branches={branches} />
                 <ButtonContainer branches={branches} setBranches={setBranches} />
             </div>
