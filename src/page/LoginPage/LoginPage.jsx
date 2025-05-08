@@ -22,9 +22,6 @@ export default function LoginPage() {
 
     return (
         <Box position="relative">
-            {/* ✅ 기존 페이지 콘텐츠 */}
-
-            {/* ✅ 로그인 오버레이 (로그인 전까지만 보여짐) */}
             {!isLoggedIn && (
                 <Box
                     position="fixed"
