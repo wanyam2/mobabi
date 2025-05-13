@@ -2,14 +2,14 @@ import React from "react";
 import { useToast } from "@chakra-ui/react";
 import "./CommitGraph.css";
 
-export default function CommitGraph({ branches = [] }) {
+export default function CommitGraph({ branches = [], pullCommits = [] }) {
     const toast = useToast();
 
     const handleCommitClick = (commit) => {
         console.log("✅ 커밋 성공:", commit);
         toast({
             title: "커밋 성공!",
-            description: `해시: ${commit.hash?.slice(0, 7)}\n메시지: ${commit.message}`,
+            description: `메시지: ${commit.message}`,
             status: "success",
             duration: 3000,
             isClosable: true,
@@ -19,6 +19,20 @@ export default function CommitGraph({ branches = [] }) {
     return (
         <div className="graph-container">
             <h2 className="graph-title">Git Commit Graph</h2>
+
+            {pullCommits.length > 0 && (
+                <div className="pull-commits">
+                    <h4>📥 Pull 받은 커밋</h4>
+                    {pullCommits.map((commit) => (
+                        <div key={commit.id} className="pull-commit">
+                            <strong>{commit.message}</strong>
+                            <div>Author: {commit.author}</div>
+                            <div>Date: {commit.date}</div>
+                        </div>
+                    ))}
+                </div>
+            )}
+
             <div className="graph">
                 {branches.map((branch, bIndex) => (
                     <div key={branch.name} className="branch">
@@ -30,11 +44,9 @@ export default function CommitGraph({ branches = [] }) {
                                         className="commit"
                                         style={{ backgroundColor: branchColors[bIndex] }}
                                         onClick={() => handleCommitClick(commit)}
+                                        title={`메시지: ${commit.message}\n파일: ${(commit.files || []).join(', ')}`}
                                     >
                                         <div>{commit.message}</div>
-                                        {commit.hash && (
-                                            <div className="meta">{commit.hash.slice(0, 6)}</div>
-                                        )}
                                         {commit.committedAt && (
                                             <div className="meta">{new Date(commit.committedAt).toLocaleString()}</div>
                                         )}

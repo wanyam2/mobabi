@@ -14,13 +14,12 @@ const steps = [
     { title: "Push", description: "Push changes to repository" },
 ];
 
-function ButtonContainer({ branches, setBranches }) {
+function ButtonContainer({ branches, setBranches, setPullCommits }) {
     const [activeStep, setActiveStep] = useState(0);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [commitMessage, setCommitMessage] = useState('');
     const [selectedBranch, setSelectedBranch] = useState('main');
     const [isPulling, setIsPulling] = useState(false);
-    const [pullData, setPullData] = useState([]); // ✅ Pull된 커밋 데이터를 저장
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const toast = useToast();
 
@@ -96,13 +95,12 @@ function ButtonContainer({ branches, setBranches }) {
     const handlePull = () => {
         setIsPulling(true);
         setTimeout(() => {
-            // 가상 데이터 생성
             const newPullData = [
                 { id: 1, message: "Fix bug in feature A", author: "John Doe", date: "2025-04-17" },
                 { id: 2, message: "Add new feature B", author: "Jane Smith", date: "2025-04-16" },
                 { id: 3, message: "Update README", author: "Alice Brown", date: "2025-04-15" },
             ];
-            setPullData(newPullData);  // 가상 커밋 데이터 설정
+            setPullCommits(newPullData); // ✅ 상위에서 관리하도록 전달
             setIsPulling(false);
             toast({
                 title: "Pull 완료",
@@ -123,8 +121,14 @@ function ButtonContainer({ branches, setBranches }) {
                         ...branch,
                         pushedCommits: [
                             ...branch.pushedCommits,
-                            { id: branch.pushedCommits.length + 1, message: commitMessage }
-                        ]
+                            {
+                                id: branch.pushedCommits.length + 1,
+                                message: commitMessage,
+                                files: selectedFiles,
+                                hash: Math.random().toString(36).substring(2, 10),
+                                committedAt: new Date().toISOString(),
+                            },
+                        ],
                     }
                     : branch
             )
@@ -168,18 +172,6 @@ function ButtonContainer({ branches, setBranches }) {
                                             </VStack>
                                         ) : (
                                             <Button colorScheme="blue" onClick={handlePull}>Pull</Button>
-                                        )}
-                                        {pullData.length > 0 && !isPulling && (
-                                            <Box mt={4}>
-                                                <Text fontSize="lg" fontWeight="bold">가져온 커밋 내역</Text>
-                                                {pullData.map(commit => (
-                                                    <Box key={commit.id} mt={2} padding="2" border="1px" borderColor="gray.200">
-                                                        <Text><strong>{commit.message}</strong></Text>
-                                                        <Text>Author: {commit.author}</Text>
-                                                        <Text>Date: {commit.date}</Text>
-                                                    </Box>
-                                                ))}
-                                            </Box>
                                         )}
                                     </>
                                 )}
