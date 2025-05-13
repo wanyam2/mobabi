@@ -1,9 +1,10 @@
 @import url("//unpkg.com/element-ui@2.15.14/lib/theme-chalk/index.css");
 
 .ButtonContainer {
-    width: 100%;
+    width: 80%;
     height: 29%;
     position: absolute;
     bottom: 0;
-    margin-left: 1%;
+    margin-left: 10vh;
+
 }
