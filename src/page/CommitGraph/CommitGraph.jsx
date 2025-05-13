@@ -1,5 +1,6 @@
 import React from "react";
 import { useToast } from "@chakra-ui/react";
+import "./CommitGraph.css";
 
 export default function CommitGraph({ branches = [] }) {
     const toast = useToast();
@@ -16,29 +17,30 @@ export default function CommitGraph({ branches = [] }) {
     };
 
     return (
-        <div style={styles.graphContainer}>
-            <h2 style={styles.title}>Git Commit Graph</h2>
-            <div style={styles.graph}>
+        <div className="graph-container">
+            <h2 className="graph-title">Git Commit Graph</h2>
+            <div className="graph">
                 {branches.map((branch, bIndex) => (
-                    <div key={branch.name} style={styles.branch}>
+                    <div key={branch.name} className="branch">
                         <h3 style={{ color: branchColors[bIndex] }}>{branch.name}</h3>
-                        <div style={styles.commitLine}>
+                        <div className="commit-line">
                             {branch.pushedCommits.map((commit, index) => (
                                 <React.Fragment key={commit.hash || commit.id}>
                                     <div
-                                        style={{ ...styles.commit, backgroundColor: branchColors[bIndex] }}
+                                        className="commit"
+                                        style={{ backgroundColor: branchColors[bIndex] }}
                                         onClick={() => handleCommitClick(commit)}
                                     >
                                         <div>{commit.message}</div>
                                         {commit.hash && (
-                                            <div style={styles.meta}>{commit.hash.slice(0, 6)}</div>
+                                            <div className="meta">{commit.hash.slice(0, 6)}</div>
                                         )}
                                         {commit.committedAt && (
-                                            <div style={styles.meta}>{new Date(commit.committedAt).toLocaleString()}</div>
+                                            <div className="meta">{new Date(commit.committedAt).toLocaleString()}</div>
                                         )}
                                     </div>
                                     {index < branch.pushedCommits.length - 1 && (
-                                        <div style={styles.arrow}>↓</div>
+                                        <div className="arrow">↓</div>
                                     )}
                                 </React.Fragment>
                             ))}
@@ -49,41 +51,5 @@ export default function CommitGraph({ branches = [] }) {
         </div>
     );
 }
-
-const styles = {
-    title: { color: "#fff", marginBottom: "10px" },
-    graph: {
-        display: "flex",
-        justifyContent: "center",
-        gap: "50px",
-        alignItems: "flex-start",
-    },
-    branch: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-    },
-    commitLine: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "5px",
-    },
-    commit: {
-        padding: "10px",
-        borderRadius: "5px",
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center",
-        minWidth: "150px",
-        transition: "transform 0.2s ease-in-out",
-        cursor: "pointer",
-    },
-    meta: {
-        fontSize: "0.7rem",
-        opacity: 0.7,
-    },
-    arrow: { fontSize: "20px", color: "#ccc" },
-};
 
 const branchColors = ["#ec7e5f", "#dd8bce", "#797f98", "#80516b", "#A833FF"];

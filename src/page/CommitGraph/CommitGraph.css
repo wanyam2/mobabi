@@ -1,0 +1,49 @@
+.graph-container {
+    padding: 1rem;
+}
+
+.graph-title {
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.graph {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    align-items: flex-start;
+}
+
+.branch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.commit-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.commit {
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    min-width: 150px;
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.meta {
+    font-size: 0.7rem;
+    opacity: 0.7;
+}
+
+.arrow {
+    font-size: 20px;
+    color: #ccc;
+}
