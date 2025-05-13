@@ -100,7 +100,7 @@ function ButtonContainer({ branches, setBranches, setPullCommits }) {
                 { id: 2, message: "Add new feature B", author: "Jane Smith", date: "2025-04-16" },
                 { id: 3, message: "Update README", author: "Alice Brown", date: "2025-04-15" },
             ];
-            setPullCommits(newPullData); // ✅ 상위에서 관리하도록 전달
+            setPullCommits(newPullData);
             setIsPulling(false);
             toast({
                 title: "Pull 완료",
@@ -113,39 +113,62 @@ function ButtonContainer({ branches, setBranches, setPullCommits }) {
         }, 2000);
     };
 
-    const handlePush = () => {
-        setBranches(prevBranches =>
-            prevBranches.map(branch =>
-                branch.name === selectedBranch
-                    ? {
-                        ...branch,
-                        pushedCommits: [
-                            ...branch.pushedCommits,
-                            {
-                                id: branch.pushedCommits.length + 1,
-                                message: commitMessage,
-                                files: selectedFiles,
-                                hash: Math.random().toString(36).substring(2, 10),
-                                committedAt: new Date().toISOString(),
-                            },
-                        ],
-                    }
-                    : branch
-            )
-        );
+    const handlePush = async () => {
+        try {
+            const response = await fetch(`/repos/:id/commit`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    message: commitMessage,
+                    files: selectedFiles,
+                }),
+            });
 
-        toast({
-            title: "Push 완료!",
-            description: "커밋이 원격 저장소로 푸시되었습니다.",
-            status: "success",
-            duration: 3000,
-            isClosable: true,
-            position: "bottom-right",
-        });
+            const data = await response.json();
 
-        setActiveStep(0);
-        setSelectedFiles([]);
-        setCommitMessage('');
+            if (!data.success) throw new Error("커밋 실패");
+
+            setBranches(prev =>
+                prev.map(branch =>
+                    branch.name === selectedBranch
+                        ? {
+                            ...branch,
+                            pushedCommits: [
+                                ...branch.pushedCommits,
+                                {
+                                    id: branch.pushedCommits.length + 1,
+                                    message: data.message,
+                                    hash: data.commitHash,
+                                    committedAt: data.committedAt,
+                                    stats: data.stats,
+                                    files: selectedFiles,
+                                },
+                            ],
+                        }
+                        : branch
+                )
+            );
+
+            toast({
+                title: "Push 완료!",
+                description: `해시: ${data.commitHash.slice(0, 7)}`,
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
+
+            setActiveStep(0);
+            setSelectedFiles([]);
+            setCommitMessage('');
+        } catch (err) {
+            toast({
+                title: "Push 실패",
+                description: err.message,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+        }
     };
 
     return (
