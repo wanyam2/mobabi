@@ -16,7 +16,7 @@ function App() {
         },
     ]);
 
-    const [pullCommits, setPullCommits] = useState([]); // ✅ pull 내역을 App에서 관리
+    const [pullCommits, setPullCommits] = useState([]);
 
     return (
         <ChakraProvider>
@@ -25,7 +25,7 @@ function App() {
                 <ButtonContainer
                     branches={branches}
                     setBranches={setBranches}
-                    setPullCommits={setPullCommits} // ✅ ButtonContainer에서 전달받음
+                    setPullCommits={setPullCommits}
                 />
             </div>
         </ChakraProvider>

@@ -84,8 +84,31 @@ function ButtonContainer({ branches, setBranches, setPullCommits }) {
             return;
         }
 
-        if (activeStep === 2 && commitMessage.trim() === '') {
-            alert("커밋 메시지를 입력하세요!");
+        if (activeStep === 2) {
+            if (commitMessage.trim() === '') {
+                toast({
+                    title: '커밋 메시지를 입력하세요',
+                    status: 'warning',
+                    duration: 2000,
+                    isClosable: true,
+                });
+                return;
+            }
+
+            try {
+                const res = await fetch(`/repos/ba4a515c-3604-4294-a3cc-ba0b1ea05ebe/commit`, {    // repoId 사용
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({message: commitMessage}),
+                });
+                const data = await res.json();
+                if (!data.success) throw new Error('Commit 실패');
+
+                toast({title: 'Commit 성공', description: data.message, status: 'success'});
+                setActiveStep(prev => prev + 1);
+            } catch (err) {
+                toast({title: 'Commit 실패', description: err.message, status: 'error'});
+            }
             return;
         }
 
@@ -109,7 +132,7 @@ function ButtonContainer({ branches, setBranches, setPullCommits }) {
                 duration: 2000,
                 isClosable: true,
             });
-            handleNext();
+            setActiveStep(prev => prev + 1);
         }, 2000);
     };
 
@@ -187,16 +210,14 @@ function ButtonContainer({ branches, setBranches, setPullCommits }) {
                         {activeStep === index && (
                             <Box mt={4}>
                                 {index === 0 && (
-                                    <>
-                                        {isPulling ? (
-                                            <VStack>
-                                                <Spinner />
-                                                <Progress size="xs" isIndeterminate colorScheme="blue" w="100%" />
-                                            </VStack>
-                                        ) : (
-                                            <Button colorScheme="blue" onClick={handlePull}>Pull</Button>
-                                        )}
-                                    </>
+                                    isPulling ? (
+                                        <VStack>
+                                            <Spinner />
+                                            <Progress size="xs" isIndeterminate colorScheme="blue" w="100%" />
+                                        </VStack>
+                                    ) : (
+                                        <Button colorScheme="blue" onClick={handlePull}>Pull</Button>
+                                    )
                                 )}
                                 {index === 1 && (
                                     <>
