@@ -8,10 +8,10 @@ import "./ButtonContainer.css";
 import AddModal from "../AddModal.jsx";
 
 const steps = [
-    { title: "Pull", description: "Pull the latest changes" },
-    { title: "Add", description: "Select files to add" },
-    { title: "Commit", description: "Enter commit message" },
-    { title: "Push", description: "Push changes to repository" },
+    { title: "Pull", description: "새로 수정된 사항을 불러와요" },
+    { title: "Add", description: "내가 수정한 파일을 추가해요" },
+    { title: "Commit", description: "덧붙일 메세지를 작성해요" },
+    { title: "Push", description: "레포지토리에 수정사항을 반영해요" },
 ];
 
 function ButtonContainer({ branches, setBranches, setPullCommits }) {
@@ -103,7 +103,6 @@ function ButtonContainer({ branches, setBranches, setPullCommits }) {
                 });
                 const data = await res.json();
                 if (!data.success) throw new Error('Commit 실패');
-
                 toast({title: 'Commit 성공', description: data.message, status: 'success'});
                 setActiveStep(prev => prev + 1);
             } catch (err) {
@@ -213,7 +212,7 @@ function ButtonContainer({ branches, setBranches, setPullCommits }) {
                                     isPulling ? (
                                         <VStack>
                                             <Spinner />
-                                            <Progress size="xs" isIndeterminate colorScheme="blue" w="100%" />
+                                            <Progress size="xs" isIndeterminate colorScheme="blue" w="50%" />
                                         </VStack>
                                     ) : (
                                         <Button colorScheme="blue" onClick={handlePull}>Pull</Button>

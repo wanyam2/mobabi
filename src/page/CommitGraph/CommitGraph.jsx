@@ -64,4 +64,4 @@ export default function CommitGraph({ branches = [], pullCommits = [] }) {
     );
 }
 
-const branchColors = ["#ec7e5f", "#dd8bce", "#797f98", "#80516b", "#A833FF"];
+const branchColors = ["#fda189", "#e1aedc", "#797f98", "#748868", "#A833FF"];
