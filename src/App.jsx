@@ -9,11 +9,11 @@ function App() {
     const [branches, setBranches] = useState([
         {
             name: "main",
-            pushedCommits: [{ id: 1, message: "첫 번째 커밋" }],
+            pushedCommits: [{ id: 1, message: "initial commit" }],
         },
         {
             name: "develop",
-            pushedCommits: [{ id: 1, message: "다른 브랜치" }],
+            pushedCommits: [{ id: 1, message: "another commit" }],
         },
     ]);
 

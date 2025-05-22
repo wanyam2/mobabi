@@ -96,7 +96,7 @@ function ButtonContainer({ branches, setBranches, setPullCommits }) {
             }
 
             try {
-                const res = await fetch(`/repos/ba4a515c-3604-4294-a3cc-ba0b1ea05ebe/commit`, {    // repoId 사용
+                const res = await fetch(`/repos/:id/commit`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({message: commitMessage}),
@@ -137,43 +137,25 @@ function ButtonContainer({ branches, setBranches, setPullCommits }) {
 
     const handlePush = async () => {
         try {
-            const response = await fetch(`/repos/:id/commit`, {
+            const response = await fetch(`/repos/:id/push`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    message: commitMessage,
-                    files: selectedFiles,
+                    name: "myProject",
+                    description: "테스트 저장소",
+                    isPrivate: true
                 }),
             });
 
             const data = await response.json();
 
-            if (!data.success) throw new Error("커밋 실패");
-
-            setBranches(prev =>
-                prev.map(branch =>
-                    branch.name === selectedBranch
-                        ? {
-                            ...branch,
-                            pushedCommits: [
-                                ...branch.pushedCommits,
-                                {
-                                    id: branch.pushedCommits.length + 1,
-                                    message: data.message,
-                                    hash: data.commitHash,
-                                    committedAt: data.committedAt,
-                                    stats: data.stats,
-                                    files: selectedFiles,
-                                },
-                            ],
-                        }
-                        : branch
-                )
-            );
+            if (!data.success || !data.pushed || !data.pushed.length) {
+                throw new Error("Push 응답 형식이 올바르지 않음");
+            }
 
             toast({
                 title: "Push 완료!",
-                description: `해시: ${data.commitHash.slice(0, 7)}`,
+                description: `${data.pushed[0].local} → ${data.pushed[0].remote} 브랜치로 푸시되었습니다.`,
                 status: "success",
                 duration: 3000,
                 isClosable: true,
@@ -192,6 +174,7 @@ function ButtonContainer({ branches, setBranches, setPullCommits }) {
             });
         }
     };
+
 
     return (
         <Box className="ButtonContainer">
