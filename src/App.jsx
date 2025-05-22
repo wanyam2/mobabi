@@ -22,7 +22,6 @@ function App() {
     return (
         <ChakraProvider>
             <div className="App">
-                <SideBar />
                 <div className="main-content">
                     <BranchContainer branches={branches} pullCommits={pullCommits} />
                     <ButtonContainer
@@ -30,6 +29,7 @@ function App() {
                         setBranches={setBranches}
                         setPullCommits={setPullCommits}
                     />
+                    <SideBar />
                 </div>
             </div>
         </ChakraProvider>
