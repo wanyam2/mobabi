@@ -18,11 +18,8 @@ export default function CommitGraph({ branches = [], pullCommits = [] }) {
 
     return (
         <div className="graph-container">
-            <h2 className="graph-title">Git Commit Graph</h2>
-
             {pullCommits.length > 0 && (
                 <div className="pull-commits">
-                    <h4>📥 Pull 받은 커밋</h4>
                     {pullCommits.map((commit) => (
                         <div key={commit.id} className="pull-commit">
                             <strong>{commit.message}</strong>
