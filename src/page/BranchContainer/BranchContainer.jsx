@@ -1,11 +1,11 @@
 import React from "react";
-import CommitGraph from "../CommitGraph/CommitGraph"; // CommitGraph 컴포넌트 임포트
+import CommitGraph from "../CommitGraph/CommitGraph";
 import "./BranchContainer.css";
 
-export default function BranchContainer({ branches }) {
+export default function BranchContainer({ branches, pullCommits }) {
     return (
         <div className="BranchContainer">
-            <CommitGraph branches={branches} />
+            <CommitGraph branches={branches} pullCommits= {pullCommits} />
         </div>
     );
 }

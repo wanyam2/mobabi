@@ -22,40 +22,47 @@ export default function CommitGraph({ branches = [], pullCommits = [] }) {
                 <div className="pull-commits">
                     {pullCommits.map((commit) => (
                         <div key={commit.id} className="pull-commit">
-                            <strong>{commit.message}</strong>
-                            <div>Author: {commit.author}</div>
-                            <div>Date: {commit.date}</div>
+
                         </div>
                     ))}
                 </div>
             )}
 
             <div className="graph">
-                {branches.map((branch, bIndex) => (
-                    <div key={branch.name} className="branch">
-                        <h3 style={{ color: branchColors[bIndex] }}>{branch.name}</h3>
-                        <div className="commit-line">
-                            {branch.pushedCommits.map((commit, index) => (
-                                <React.Fragment key={commit.hash || commit.id}>
-                                    <div
-                                        className="commit"
-                                        style={{ backgroundColor: branchColors[bIndex] }}
-                                        onClick={() => handleCommitClick(commit)}
-                                        title={`메시지: ${commit.message}\n파일: ${(commit.files || []).join(', ')}`}
-                                    >
-                                        <div>{commit.message}</div>
-                                        {commit.committedAt && (
-                                            <div className="meta">{new Date(commit.committedAt).toLocaleString()}</div>
-                                        )}
-                                    </div>
-                                    {index < branch.pushedCommits.length - 1 && (
-                                        <div className="arrow">↓</div>
-                                    )}
-                                </React.Fragment>
-                            ))}
-                        </div>
-                    </div>
-                ))}
+                <div className="graph">
+                    {branches.map((branch, bIndex) => {
+                        const allCommits =
+                            branch.name === "main"
+                                ? [...branch.pushedCommits, ...pullCommits]
+                                : branch.pushedCommits;
+
+                        return (
+                            <div key={branch.name} className="branch">
+                                <h3 style={{ color: branchColors[bIndex] }}>{branch.name}</h3>
+                                <div className="commit-line">
+                                    {allCommits.map((commit, index) => (
+                                        <React.Fragment key={commit.hash || commit.id}>
+                                            <div
+                                                className="commit"
+                                                style={{ backgroundColor: branchColors[bIndex] }}
+                                                onClick={() => handleCommitClick(commit)}
+                                                title={`메시지: ${commit.message}\n파일: ${(commit.files || []).join(", ")}`}
+                                            >
+                                                <div>{commit.message}</div>
+                                                <div className="meta">
+                                                    {commit.committedAt
+                                                        ? new Date(commit.committedAt).toLocaleString()
+                                                        : commit.date}
+                                                </div>
+                                            </div>
+                                            {index < allCommits.length - 1 && <div className="arrow">↓</div>}
+                                        </React.Fragment>
+                                    ))}
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
         </div>
     );
