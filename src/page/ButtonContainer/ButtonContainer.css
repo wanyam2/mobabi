@@ -1,29 +1,24 @@
 @import url("//unpkg.com/element-ui@2.15.14/lib/theme-chalk/index.css");
 
 .ButtonContainer {
-    width: 90%;
-    max-width: 1200px;
-    margin: 40px auto 0 auto;
-    margin-bottom: 5%;
+    width: 80%;
     padding: 16px;
     position: fixed;
-    bottom: 20px;
-    left: 46.8%;
-    transform: translateX(-50%) translateX(12.5%);
+    bottom: 30px;
+    margin-left: 35%;
+    transform: translateX(-50%);
     background-color: #fff;
     box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.1);
     border-radius: 16px;
     z-index: 1000;
-    transition: all 0.3s ease-in-out;
 }
-
 
 .ButtonContainer .chakra-stepper {
     flex-wrap: wrap;
 }
 
 .ButtonContainer .chakra-step {
-    min-width: 200px;
+    min-width: 1%;
     margin-bottom: 12px;
 }
 

@@ -119,8 +119,7 @@ function ButtonContainer({branches, setBranches, setPullCommits}) {
         setTimeout(() => {
             const newPullData = [
                 {id: 1, message: "Fix bug in feature A", author: "John Doe", date: "2025-04-17"},
-                {id: 2, message: "Add new feature B", author: "Jane Smith", date: "2025-04-16"},
-                {id: 3, message: "Update README", author: "Alice Brown", date: "2025-04-15"},
+
             ];
             setPullCommits(newPullData);
             setIsPulling(false);

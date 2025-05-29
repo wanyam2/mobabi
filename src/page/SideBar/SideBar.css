@@ -1,9 +1,9 @@
 .sidebar {
-    position: fixed; /* ← 왼쪽에 고정됨 */
+    position: fixed;
     top: 0;
     left: 0;
-    width: 240px;
-    height: 100vh;
+    width: 15%;
+    height: 100%;
     background-color: #fafafa;
     color: white;
     display: flex;
@@ -15,11 +15,11 @@
 }
 
 .logo-container {
-    margin-bottom: 30px;
+    margin-top: 0;
 }
 
 .logo {
-    width: 200px;
+    width: 100%;
     height: auto;
     object-fit: contain;
 }

@@ -1,11 +1,12 @@
 .BranchContainer {
-    width: 300%;
-    max-width: 1200px;
-    height: 70%;
-    margin: 40px auto 0 auto;
-    padding: 24px;
+    width: 200%;
+    max-width: 1000px;
+    height: 60%;
+    margin-top: 10%;
+    padding: 10%;
     border: 1px solid #e5e7eb;
     border-radius: 16px;
     box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
     transition: box-shadow 0.3s ease;
+    overflow-x: auto;
 }

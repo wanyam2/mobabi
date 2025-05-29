@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 import BranchContainer from "./page/BranchContainer/BranchContainer.jsx";
 import ButtonContainer from "./page/ButtonContainer/ButtonContainer.jsx";
-import SideBar from "./page/SideBar/SideBar.jsx"; // 경로에 맞게 수정
+import SideBar from "./page/SideBar/SideBar.jsx";
 import { ChakraProvider } from "@chakra-ui/react";
 
 function App() {
