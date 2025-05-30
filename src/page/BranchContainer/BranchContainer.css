@@ -1,7 +1,7 @@
 .BranchContainer {
     width: 100%;
     max-width: 1280px;
-    height: auto;
+    height: auto; /* 변경 권장: 아래 참고 */
     margin: 40px auto 0 auto;
     padding: 24px;
     border: 1px solid #e5e7eb;
@@ -9,4 +9,10 @@
     box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
     transition: box-shadow 0.3s ease;
     box-sizing: border-box;
+
+    /*!* ✅ 아래 추가하면 확실하게 스크롤 전용 박스가 됩니다 *!*/
+    /*height: 80vh;           !* 화면 기준 고정 높이 *!*/
+    /*overflow-y: hidden;     !* 자체는 스크롤 없음, 내부 요소만 스크롤 *!*/
+    /*display: flex;*/
+    /*flex-direction: column;*/
 }

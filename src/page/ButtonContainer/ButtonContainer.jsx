@@ -119,6 +119,14 @@ function ButtonContainer({branches, setBranches, setPullCommits}) {
         setTimeout(() => {
             const newPullData = [
                 {id: 1, message: "버그를 수정했어요", author: "이은채", date: "2025-04-17"},
+                {id: 1, message: "버그를 수정했어요", author: "이은채", date: "2025-04-17"},
+                {id: 1, message: "버그를 수정했어요", author: "이은채", date: "2025-04-17"},
+                {id: 1, message: "버그를 수정했어요", author: "이은채", date: "2025-04-17"},
+                {id: 1, message: "버그를 수정했어요", author: "이은채", date: "2025-04-17"},
+                {id: 1, message: "버그를 수정했어요", author: "이은채", date: "2025-04-17"},
+                {id: 1, message: "버그를 수정했어요", author: "이은채", date: "2025-04-17"},
+                {id: 1, message: "버그를 수정했어요", author: "이은채", date: "2025-04-17"},
+
 
             ];
             setPullCommits(newPullData);
