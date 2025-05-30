@@ -4,7 +4,8 @@
 }
 
 .main-content {
-    margin-left: 18%;
-    padding-left: 6%;
+    margin-left: 240px; /* sidebar width */
+    width: calc(100% - 240px);
+    box-sizing: border-box;
+    padding: 16px;
 }
-

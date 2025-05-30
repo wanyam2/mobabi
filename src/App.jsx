@@ -9,11 +9,11 @@ function App() {
     const [branches, setBranches] = useState([
         {
             name: "main",
-            pushedCommits: [{ id: 1, message: "initial commit" }],
+            pushedCommits: [{ id: 1, message: "새 레포지토리 생성" }],
         },
         {
             name: "develop",
-            pushedCommits: [{ id: 1, message: "another commit" }],
+            pushedCommits: [{ id: 1, message: "새 브랜치 생성" }],
         },
     ]);
 
@@ -27,6 +27,7 @@ function App() {
                     <ButtonContainer
                         branches={branches}
                         setBranches={setBranches}
+                        pullCommits={pullCommits}
                         setPullCommits={setPullCommits}
                     />
                     <SideBar />

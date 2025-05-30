@@ -1,16 +1,16 @@
-@import url("//unpkg.com/element-ui@2.15.14/lib/theme-chalk/index.css");
-
 .ButtonContainer {
-    width: 80%;
-    padding: 16px;
-    position: fixed;
-    bottom: 30px;
-    margin-left: 35%;
-    transform: translateX(-50%);
+    width: 100%;
+    max-width: 1280px;
+    margin: 30% auto 70% auto;
+    padding: 24px;
+    bottom: 20px;
+    left: 50%;
     background-color: #fff;
     box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.1);
     border-radius: 16px;
     z-index: 1000;
+    transition: all 0.3s ease-in-out;
+    box-sizing: border-box;
 }
 
 .ButtonContainer .chakra-stepper {
@@ -18,10 +18,11 @@
 }
 
 .ButtonContainer .chakra-step {
-    min-width: 1%;
+    min-width: 200px;
     margin-bottom: 12px;
 }
 
 .ButtonContainer button {
     white-space: nowrap;
 }
+

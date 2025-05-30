@@ -118,7 +118,7 @@ function ButtonContainer({branches, setBranches, setPullCommits}) {
         setIsPulling(true);
         setTimeout(() => {
             const newPullData = [
-                {id: 1, message: "Fix bug in feature A", author: "John Doe", date: "2025-04-17"},
+                {id: 1, message: "버그를 수정했어요", author: "이은채", date: "2025-04-17"},
 
             ];
             setPullCommits(newPullData);
@@ -133,6 +133,7 @@ function ButtonContainer({branches, setBranches, setPullCommits}) {
             setActiveStep(prev => prev + 1);
         }, 2000);
     };
+
 
     const refreshBranches = async () => {
         const res  = await fetch(`/repos/ba4a515c-3604-4294-a3cc-ba0b1ea05ebe/branches?limit=20`);
@@ -241,7 +242,7 @@ function ButtonContainer({branches, setBranches, setPullCommits}) {
                                         <Input
                                             value={commitMessage}
                                             onChange={(e) => setCommitMessage(e.target.value)}
-                                            placeholder="Enter commit message"
+                                            placeholder="어떤 작업을 했는지 설명해주세요"
                                             size="sm"
                                         />
                                         <Button colorScheme="gray" onClick={handleNext}>Commit</Button>

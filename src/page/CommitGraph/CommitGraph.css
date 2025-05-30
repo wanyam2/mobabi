@@ -12,12 +12,14 @@
     justify-content: center;
     gap: 50px;
     align-items: flex-start;
+    flex-wrap: wrap;
 }
 
 .branch {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width:30%;
 }
 
 .commit-line {
@@ -36,6 +38,7 @@
     min-width: 150px;
     transition: transform 0.2s ease-in-out;
     cursor: pointer;
+    box-sizing: border-box;
 }
 
 .meta {
