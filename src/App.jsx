@@ -9,12 +9,26 @@ function App() {
     const [branches, setBranches] = useState([
         {
             name: "main",
-            pushedCommits: [{ id: 1, message: "새 레포지토리 생성" }],
+            pushedCommits: [
+                {
+                    id: 1,
+                    message: "새 레포지토리 생성",
+                    committedAt: new Date().toISOString(),
+                    files: ["README.md"]
+                }
+            ]
         },
         {
             name: "develop",
-            pushedCommits: [{ id: 1, message: "새 브랜치 생성" }],
-        },
+            pushedCommits: [
+                {
+                    id: 2,
+                    message: "새 브랜치 생성",
+                    committedAt: new Date().toISOString(),
+                    files: ["index.js"]
+                }
+            ]
+        }
     ]);
 
     const [pullCommits, setPullCommits] = useState([]);

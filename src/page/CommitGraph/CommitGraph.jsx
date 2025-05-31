@@ -6,47 +6,43 @@ export default function CommitGraph({ branches = [], pullCommits = [] }) {
     const toast = useToast();
 
     const handleCommitClick = (commit) => {
-        console.log("✅ 커밋 성공:", commit);
         toast({
-            title: "커밋 성공!",
-            description: `메시지: ${commit.message}`,
+            title: "커밋",
+            description: commit.message,
             status: "success",
-            duration: 3000,
+            duration: 2000,
             isClosable: true,
         });
     };
 
     return (
         <div className="graph-container">
-            {pullCommits.length > 0 && (
-                <div className="pull-commits">
-                    {pullCommits.map((commit) => (
-                        <div key={commit.id} className="pull-commit">
-
-                        </div>
-                    ))}
-                </div>
-            )}
-
             <div className="graph">
-                <div className="graph">
-                    {branches.map((branch, bIndex) => {
-                        const allCommits =
-                            branch.name === "main"
-                                ? [...branch.pushedCommits, ...pullCommits]
-                                : branch.pushedCommits;
+                {branches.map((branch, bIndex) => {
+                    const pushedKeys = new Set(branch.pushedCommits.map(c => c.id || c.hash));
+                    const pullOnly = branch.name === "main"
+                        ? pullCommits.filter(c => !pushedKeys.has(c.id || c.hash))
+                        : [];
 
-                        return (
-                            <div key={branch.name} className="branch">
-                                <h3 style={{ color: branchColors[bIndex] }}>{branch.name}</h3>
-                                <div className="commit-line">
-                                    {allCommits.map((commit, index) => (
-                                        <React.Fragment key={commit.hash || commit.id}>
+                    const allCommits = [...branch.pushedCommits, ...pullOnly];
+
+                    return (
+                        <div key={branch.name} className="branch">
+                            <h3 style={{ color: branchColors[bIndex] }}>{branch.name}</h3>
+                            <div className="commit-line">
+                                {allCommits.map((commit, index) => {
+                                    const key = commit.id || commit.hash;
+                                    const isPullCommit = pullCommits.some(pc => (pc.id || pc.hash) === key) &&
+                                        !pushedKeys.has(key);
+
+                                    return (
+                                        <React.Fragment key={key}>
                                             <div
-                                                className="commit"
-                                                style={{ backgroundColor: branchColors[bIndex] }}
+                                                className={`commit ${isPullCommit ? "pulled" : ""}`}
+                                                style={{
+                                                    backgroundColor: isPullCommit ? undefined : branchColors[bIndex]
+                                                }}
                                                 onClick={() => handleCommitClick(commit)}
-                                                title={`메시지: ${commit.message}\n파일: ${(commit.files || []).join(", ")}`}
                                             >
                                                 <div>{commit.message}</div>
                                                 <div className="meta">
@@ -57,12 +53,12 @@ export default function CommitGraph({ branches = [], pullCommits = [] }) {
                                             </div>
                                             {index < allCommits.length - 1 && <div className="arrow">↓</div>}
                                         </React.Fragment>
-                                    ))}
-                                </div>
+                                    );
+                                })}
                             </div>
-                        );
-                    })}
-                </div>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );
