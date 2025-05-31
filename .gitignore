@@ -22,3 +22,17 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# DEV = 개발 환경
+ENV=dev
+PROD=prod
+REPO_BASE_PATH=
+REPO_LOCAL_TEST_PATH=/Users/gimnayeon/data/git
+
+# DATABASE
+DB_TYPE=postgres
+DB_HOST=localhost
+DB_PORT=15432
+DB_USERNAME=pingmong
+DB_PASSWORD=l6OS9cw1kDKLwjk
+DB_DATABASE=community
