@@ -23,10 +23,10 @@
 }
 
 .divider {
-    width: 80%;
+    width: 90%;
     border: none;
     border-top: 1px solid #dcdcdc;
-    margin: 16px 0;
+    margin: 16px 0 5% 5%;
 }
 
 .menu {
