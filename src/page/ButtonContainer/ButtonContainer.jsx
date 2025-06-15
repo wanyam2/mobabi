@@ -1,20 +1,20 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
     Button, Input, VStack, Box, Step, StepDescription,
     StepIndicator, StepStatus, StepTitle, Stepper, StepSeparator,
-    Select, useToast, Spinner, Progress, Text
+    Select, useToast, Spinner, Progress, Text, Flex
 } from "@chakra-ui/react";
 import "./ButtonContainer.css";
 import AddModal from "../AddModal.jsx";
 
 const steps = [
-    {title: "Pull", description: "새로 수정된 사항을 불러와요"},
-    {title: "Add", description: "내가 수정한 파일을 추가해요"},
-    {title: "Commit", description: "덧붙일 메세지를 작성해요"},
-    {title: "Push", description: "레포지토리에 수정사항을 반영해요"},
+    { title: "Pull", description: "새로 수정된 사항을 불러와요" },
+    { title: "Add", description: "내가 수정한 파일을 추가해요" },
+    { title: "Commit", description: "덧붙일 메세지를 작성해요" },
+    { title: "Push", description: "레포지토리에 수정사항을 반영해요" },
 ];
 
-function ButtonContainer({branches, setBranches, setPullCommits}) {
+function ButtonContainer({ branches, setBranches, setPullCommits }) {
     const [activeStep, setActiveStep] = useState(0);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [commitMessage, setCommitMessage] = useState('');
@@ -24,9 +24,9 @@ function ButtonContainer({branches, setBranches, setPullCommits}) {
     const toast = useToast();
 
     const files = [
-        {name: 'main.ts', status: '수정됨'},
-        {name: 'file2.css', status: '추가됨'},
-        {name: 'file3.html', status: '수정됨'}
+        { name: 'main.ts', status: '수정됨' },
+        { name: 'file2.css', status: '추가됨' },
+        { name: 'file3.html', status: '수정됨' }
     ];
 
     const handleFileSelect = (fileName) => {
@@ -35,6 +35,40 @@ function ButtonContainer({branches, setBranches, setPullCommits}) {
                 ? prev.filter(f => f !== fileName)
                 : [...prev, fileName]
         );
+    };
+
+    const handleRemoteCreate = async () => {
+        const newBranch = prompt("새 브랜치 이름을 입력하세요:");
+        if (!newBranch) return;
+
+        try {
+            const res = await fetch(`/repos/ba4a515c-3604-4294-a3cc-ba0b1ea05ebe/branches`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name: newBranch }),
+            });
+            const data = await res.json();
+
+            if (!data.success) throw new Error("브랜치 생성 실패");
+
+            toast({
+                title: "브랜치 생성 성공",
+                description: `"${newBranch}" 브랜치가 생성되었습니다.`,
+                status: "success",
+                duration: 2000,
+                isClosable: true,
+            });
+
+            await refreshBranches();
+        } catch (err) {
+            toast({
+                title: "브랜치 생성 실패",
+                description: err.message,
+                status: "error",
+                duration: 2000,
+                isClosable: true,
+            });
+        }
     };
 
     const handleNext = async () => {
@@ -53,8 +87,8 @@ function ButtonContainer({branches, setBranches, setPullCommits}) {
             try {
                 const response = await fetch(`/repos/ba4a515c-3604-4294-a3cc-ba0b1ea05ebe/add`, {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({files: selectedFiles})
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ files: selectedFiles })
                 });
 
                 const data = await response.json();
@@ -80,7 +114,6 @@ function ButtonContainer({branches, setBranches, setPullCommits}) {
                     isClosable: true,
                 });
             }
-
             return;
         }
 
@@ -98,15 +131,15 @@ function ButtonContainer({branches, setBranches, setPullCommits}) {
             try {
                 const res = await fetch(`/repos/ba4a515c-3604-4294-a3cc-ba0b1ea05ebe/commit`, {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({message: commitMessage}),
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: commitMessage }),
                 });
                 const data = await res.json();
                 if (!data.success) throw new Error('Commit 실패');
-                toast({title: 'Commit 성공', description: data.message, status: 'success'});
+                toast({ title: 'Commit 성공', description: data.message, status: 'success' });
                 setActiveStep(prev => prev + 1);
             } catch (err) {
-                toast({title: 'Commit 실패', description: err.message, status: 'error'});
+                toast({ title: 'Commit 실패', description: err.message, status: 'error' });
             }
             return;
         }
@@ -139,11 +172,9 @@ function ButtonContainer({branches, setBranches, setPullCommits}) {
         }, 2000);
     };
 
-
-
     const refreshBranches = async () => {
-        const res  = await fetch(`/repos/ba4a515c-3604-4294-a3cc-ba0b1ea05ebe/branches?limit=20`);
-        const json = await res.json();          // { branches: [...] }
+        const res = await fetch(`/repos/ba4a515c-3604-4294-a3cc-ba0b1ea05ebe/branches?limit=20`);
+        const json = await res.json();
         if (json.branches?.length) setBranches(json.branches);
     };
 
@@ -151,7 +182,7 @@ function ButtonContainer({branches, setBranches, setPullCommits}) {
         try {
             const res = await fetch(`/repos/ba4a515c-3604-4294-a3cc-ba0b1ea05ebe/push`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     name: 'myProject',
                     description: '테스트 저장소',
@@ -170,7 +201,7 @@ function ButtonContainer({branches, setBranches, setPullCommits}) {
                     isClosable: true,
                 });
             } else {
-                const {local, remote} = data.pushed[0];
+                const { local, remote } = data.pushed[0];
                 toast({
                     title: 'Push 완료!',
                     description: `${local} → ${remote} 브랜치로 푸시되었습니다.`,
@@ -196,27 +227,33 @@ function ButtonContainer({branches, setBranches, setPullCommits}) {
         }
     };
 
-
     return (
         <Box className="ButtonContainer">
+            <Flex justify="space-between" align="center" mb={4}>
+                <Text fontSize="lg" fontWeight="bold"></Text>
+                <Button colorScheme="purple" size="sm" onClick={handleRemoteCreate}>
+                    Remote
+                </Button>
+            </Flex>
+
             <Stepper index={activeStep}>
                 {steps.map((step, index) => (
                     <Step key={index}>
                         <StepIndicator>
-                            <StepStatus/>
+                            <StepStatus />
                         </StepIndicator>
                         <Box>
                             <StepTitle>{step.title}</StepTitle>
                             <StepDescription>{step.description}</StepDescription>
                         </Box>
-                        <StepSeparator/>
+                        <StepSeparator />
                         {activeStep === index && (
                             <Box mt={4}>
                                 {index === 0 && (
                                     isPulling ? (
                                         <VStack>
-                                            <Spinner/>
-                                            <Progress size="xs" isIndeterminate colorScheme="blue" w="50%"/>
+                                            <Spinner />
+                                            <Progress size="xs" isIndeterminate colorScheme="blue" w="50%" />
                                         </VStack>
                                     ) : (
                                         <Button colorScheme="blue" onClick={handlePull}>Pull</Button>
