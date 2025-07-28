@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import "./App.css";
+import BranchView from "./components/git/BranchView.jsx";
 import BranchContainer from "./page/BranchContainer/BranchContainer.jsx";
 import ButtonContainer from "./page/ButtonContainer/ButtonContainer.jsx";
 import SideBar from "./page/SideBar/SideBar.jsx";
-import { ChakraProvider } from "@chakra-ui/react";
+import {ChakraProvider} from "@chakra-ui/react";
 
 function App() {
     const [branches, setBranches] = useState([
@@ -12,43 +12,52 @@ function App() {
             pushedCommits: [
                 {
                     id: 1,
-                    message: "새 레포지토리 생성",
+                    message: "처음 커밋입니다!",
                     committedAt: new Date().toISOString(),
                     files: ["README.md"]
                 }
             ]
         },
         {
-            name: "develop",
+            name: "feature/login",
             pushedCommits: [
                 {
                     id: 2,
-                    message: "새 브랜치 생성",
+                    message: "로그인 UI 개발",
                     committedAt: new Date().toISOString(),
-                    files: ["index.js"]
+                    files: ["Login.jsx"]
+                },
+                {
+                    id: 3,
+                    message: "로그인 API 연동",
+                    committedAt: new Date().toISOString(),
+                    files: ["auth.js"]
                 }
             ]
         }
     ]);
-
     const [pullCommits, setPullCommits] = useState([]);
-
     return (
         <ChakraProvider>
             <div className="App">
                 <div className="main-content">
-                    <BranchContainer branches={branches} pullCommits={pullCommits} />
+                    <SideBar />
+                    <BranchContainer
+                        branches={branches}
+                        pullCommits={pullCommits}
+                    />
                     <ButtonContainer
                         branches={branches}
                         setBranches={setBranches}
                         pullCommits={pullCommits}
                         setPullCommits={setPullCommits}
                     />
-                    <SideBar />
                 </div>
             </div>
         </ChakraProvider>
     );
 }
 
+
 export default App;
+

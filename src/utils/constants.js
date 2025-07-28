@@ -1,0 +1,1 @@
+export const branchColors = ["#fda189", "#e1aedc", "#797f98", "#748868", "#A833FF"];
