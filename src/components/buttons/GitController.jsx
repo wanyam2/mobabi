@@ -1,92 +1,79 @@
 import React, { useState } from "react";
-import { useToast } from "@chakra-ui/react";
-import AddModal from "./AddModalController.jsx";
-import GitStepContent from "./GitStepContent";
+import { Box, Stepper, Step, StepIndicator, StepStatus, StepTitle, StepDescription, StepSeparator } from "@chakra-ui/react";
+import PullStep from "./PullStep";
+import AddStep from "./AddStep";
+import CommitStep from "./CommitStep";
+import PushStep from "./PushStep";
+import RemoteButton from "./RemoteButton";
+import { steps } from "../../utils/constants.js";
+import "./GitController.css";
 
-export default function GitController({ branches, setBranches, pullCommits, setPullCommits }) {
+export default function GitController({ branches, setBranches, setPullCommits }) {
     const [activeStep, setActiveStep] = useState(0);
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [commitMessage, setCommitMessage] = useState('');
     const [selectedBranch, setSelectedBranch] = useState('main');
-    const [isPulling, setIsPulling] = useState(false);
-    const toast = useToast();
-
-    const files = [
-        { name: "main.ts", status: "수정됨" },
-        { name: "file2.css", status: "추가됨" },
-        { name: "file3.html", status: "수정됨" }
-    ];
-
-    const handleFileSelect = (fileName) => {
-        setSelectedFiles((prev) =>
-            prev.includes(fileName)
-                ? prev.filter(f => f !== fileName)
-                : [...prev, fileName]
-        );
-    };
-
-    const handlePull = () => {
-        setIsPulling(true);
-        setTimeout(() => {
-            setPullCommits([{
-                id: 999,
-                message: "버그 수정",
-                author: "이은채",
-                committedAt: new Date().toISOString(),
-                files: ["bugfix.js"]
-            }]);
-            toast({ title: "Pull 완료", status: "success" });
-            setIsPulling(false);
-            setActiveStep(prev => prev + 1);
-        }, 2000);
-    };
-
-    const handleCommit = () => {
-        if (!commitMessage.trim()) {
-            toast({ title: "커밋 메시지를 입력하세요", status: "warning" });
-            return;
-        }
-        toast({ title: "Commit 완료", status: "success" });
-        setActiveStep(prev => prev + 1);
-    };
-
-    const handlePush = () => {
-        toast({ title: "Push 완료", status: "success" });
-        setActiveStep(0);
-        setSelectedFiles([]);
-        setCommitMessage('');
-    };
 
     return (
-        <GitStepContent
-            activeStep={activeStep}
-            isPulling={isPulling}
-            handlePull={handlePull}
-            handleAddOpen={() => setIsAddModalOpen(true)}
-            handleCommit={handleCommit}
-            handlePush={handlePush}
-            isAddModalOpen={isAddModalOpen}
-            AddModalComponent={
-                <AddModal
-                    isOpen={isAddModalOpen}
-                    onClose={() => {
-                        setIsAddModalOpen(false);
-                        setActiveStep(prev => prev + 1);
-                    }}
-                    files={files}
-                    selectedFiles={selectedFiles}
-                    onSelect={handleFileSelect}
-                />
-            }
-            files={files}
-            selectedFiles={selectedFiles}
-            handleFileSelect={handleFileSelect}
-            selectedBranch={selectedBranch}
-            setSelectedBranch={setSelectedBranch}
-            commitMessage={commitMessage}
-            setCommitMessage={setCommitMessage}
-            branches={branches}
-        />
+        <Box className="ButtonContainer">
+            <RemoteButton setBranches={setBranches} />
+
+            <Stepper index={activeStep}>
+                {steps.map((step, index) => (
+                    <Step key={index}>
+                        <StepIndicator><StepStatus /></StepIndicator>
+                        <Box>
+                            <StepTitle>{step.title}</StepTitle>
+                            <StepDescription>{step.description}</StepDescription>
+                        </Box>
+                        <StepSeparator />
+                        {activeStep === index && (() => {
+                            switch (index) {
+                                case 0:
+                                    return (
+                                        <PullStep
+                                            setPullCommits={setPullCommits}
+                                            onComplete={() => setActiveStep(prev => prev + 1)}
+                                        />
+                                    );
+                                case 1:
+                                    return (
+                                        <AddStep
+                                            selectedFiles={selectedFiles}
+                                            setSelectedFiles={setSelectedFiles}
+                                            onComplete={() => setActiveStep(prev => prev + 1)}
+                                        />
+                                    );
+                                case 2:
+                                    return (
+                                        <CommitStep
+                                            branches={branches}
+                                            selectedBranch={selectedBranch}
+                                            setSelectedBranch={setSelectedBranch}
+                                            commitMessage={commitMessage}
+                                            setCommitMessage={setCommitMessage}
+                                            onComplete={() => setActiveStep(prev => prev + 1)}
+                                        />
+                                    );
+                                case 3:
+                                    return (
+                                        <PushStep
+                                            setBranches={setBranches}
+                                            onComplete={() => {
+                                                setActiveStep(0);
+                                                setSelectedFiles([]);
+                                                setCommitMessage('');
+                                            }}
+                                        />
+                                    );
+                                default:
+                                    return null;
+                            }
+                        })()}
+                    </Step>
+                ))}
+            </Stepper>
+            
+        </Box>
     );
 }

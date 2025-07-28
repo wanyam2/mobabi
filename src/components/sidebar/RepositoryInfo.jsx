@@ -1,6 +1,6 @@
 import "./ReposirotyInfo.css"
 
-export default function RepositoryInfo({ repositories, activeRepoId, onRepoClick }) {
+export default function RepositoryInfo({ repositories = [], activeRepoId, onRepoClick }) {
     return (
         <div className="menu">
             {repositories.map((repo) => (

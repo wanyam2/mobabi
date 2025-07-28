@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
 import BranchView from "./components/git/BranchView";
-import RepositoryInfo from "./components/sidebar/RepositoryInfo";
-import UserInfo from "./components/sidebar/UserInfo";
+import Sidebar from "./components/layout/Sidebar";
 import GitController from "./components/buttons/GitController";
 
 function App() {
@@ -46,15 +45,12 @@ function App() {
     return (
         <ChakraProvider>
             <div className="App" style={{ display: "flex" }}>
-                <div className="sidebar" style={{ width: "240px" }}>
-                    <RepositoryInfo
-                        repositories={branches}
-                        activeRepoId={activeRepoId}
-                        onRepoClick={setActiveRepoId}
-                    />
-                    <hr className="divider" />
-                    <UserInfo user={user} />
-                </div>
+                <Sidebar
+                    branches={branches}
+                    activeRepoId={activeRepoId}
+                    onRepoClick={setActiveRepoId}
+                    user={user}
+                />
                 <div className="main" style={{ flex: 1 }}>
                     <BranchView branches={branches} pullCommits={pullCommits} />
                     <GitController
