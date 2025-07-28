@@ -1,5 +1,5 @@
 import "./UserInfo.css"
-ß
+
 export default function UserInfo({ user }) {
     return (
         <div className="profile">

@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import BranchView from "./components/git/BranchView.jsx";
-import BranchContainer from "./page/BranchContainer/BranchContainer.jsx";
-import ButtonContainer from "./page/ButtonContainer/ButtonContainer.jsx";
-import SideBar from "./page/SideBar/SideBar.jsx";
-import {ChakraProvider} from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
+import BranchView from "./components/git/BranchView";
+import RepositoryInfo from "./components/sidebar/RepositoryInfo";
+import UserInfo from "./components/sidebar/UserInfo";
+import GitController from "./components/buttons/GitController";
 
 function App() {
     const [branches, setBranches] = useState([
         {
+            id: "main",
             name: "main",
             pushedCommits: [
                 {
@@ -19,6 +20,7 @@ function App() {
             ]
         },
         {
+            id: "feature/login",
             name: "feature/login",
             pushedCommits: [
                 {
@@ -36,17 +38,26 @@ function App() {
             ]
         }
     ]);
+
     const [pullCommits, setPullCommits] = useState([]);
+    const [activeRepoId, setActiveRepoId] = useState("main");
+    const user = { name: "홍길동", email: "test@example.com", avatar: "/avatar.png" };
+
     return (
         <ChakraProvider>
-            <div className="App">
-                <div className="main-content">
-                    <SideBar />
-                    <BranchContainer
-                        branches={branches}
-                        pullCommits={pullCommits}
+            <div className="App" style={{ display: "flex" }}>
+                <div className="sidebar" style={{ width: "240px" }}>
+                    <RepositoryInfo
+                        repositories={branches}
+                        activeRepoId={activeRepoId}
+                        onRepoClick={setActiveRepoId}
                     />
-                    <ButtonContainer
+                    <hr className="divider" />
+                    <UserInfo user={user} />
+                </div>
+                <div className="main" style={{ flex: 1 }}>
+                    <BranchView branches={branches} pullCommits={pullCommits} />
+                    <GitController
                         branches={branches}
                         setBranches={setBranches}
                         pullCommits={pullCommits}
@@ -58,6 +69,4 @@ function App() {
     );
 }
 
-
 export default App;
-

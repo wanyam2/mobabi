@@ -9,7 +9,7 @@ export default function AddModalController({ isOpen, onOpen, onClose, files, sel
             <FileSelectModal
                 isOpen={isOpen}
                 onClose={onClose}
-                files={files}
+                files={files || []}
                 selectedFiles={selectedFiles}
                 onSelect={onSelect}
             />
