@@ -41,6 +41,8 @@ function App() {
     const [pullCommits, setPullCommits] = useState([]);
     const [activeRepoId, setActiveRepoId] = useState("main");
     const user = { name: "홍길동", email: "test@example.com", avatar: "/avatar.png" };
+    const selectedRepo = branches.find(repo => repo.id === activeRepoId);
+
 
     return (
         <ChakraProvider>
@@ -52,9 +54,9 @@ function App() {
                     user={user}
                 />
                 <div className="main" style={{ flex: 1 }}>
-                    <BranchView branches={branches} pullCommits={pullCommits} />
+                    <BranchView branches={selectedRepo ? [selectedRepo] : []} pullCommits={pullCommits} />
                     <GitController
-                        branches={branches}
+                        branches={selectedRepo ? [selectedRepo] : []}
                         setBranches={setBranches}
                         pullCommits={pullCommits}
                         setPullCommits={setPullCommits}
