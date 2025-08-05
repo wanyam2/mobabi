@@ -19,7 +19,7 @@ function FileSelectModal({ isOpen, onClose, files, selectedFiles, onSelect }) {
                                 isChecked={selectedFiles.includes(file.name)}
                                 onChange={() => onSelect(file.name)}
                             >
-                                {file.name} {" "}
+                                {file.name}{" "}
                                 <Badge colorScheme={getStatusColor(file.status)}>
                                     {file.status}
                                 </Badge>
@@ -37,12 +37,12 @@ function FileSelectModal({ isOpen, onClose, files, selectedFiles, onSelect }) {
 
 const getStatusColor = (status) => {
     switch (status) {
-        case '수정됨':
-            return 'orange';
-        case '추가됨':
-            return 'green';
+        case "수정됨":
+            return "orange";
+        case "추가됨":
+            return "green";
         default:
-            return 'gray';
+            return "gray";
     }
 };
 

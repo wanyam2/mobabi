@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button, useToast } from "@chakra-ui/react";
+import FileSelectModal from "../modals/FileSelectModal.jsx";
 
 const dummyFiles = [
     { name: 'main.ts', status: '수정됨' },
@@ -52,7 +53,7 @@ export default function AddStep({ selectedFiles, setSelectedFiles, onComplete })
     return (
         <>
             <Button onClick={() => setIsOpen(true)} colorScheme="gray">Add</Button>
-            <AddModal
+            <FileSelectModal
                 isOpen={isOpen}
                 onClose={() => {
                     setIsOpen(false);
