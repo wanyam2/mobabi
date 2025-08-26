@@ -1,24 +1,29 @@
 import React from "react";
-import RepositoryInfo from "../sidebar/RepositoryInfo";
 import UserInfo from "../sidebar/UserInfo";
 import logo from "../../asset/logo.png";
+import "./Sidebar.css";
 
-export default function Sidebar({ branches, activeRepoId, onRepoClick, user }) {
+export default function Sidebar({ branches: projects = [], activeRepoId, onRepoClick, user }) {
+    const activeProject = projects.find(p => p.id === activeRepoId);
+
     return (
-        <div className="sidebar" style={{ width: "240px" }}>
-            <div style={{ textAlign: "center", padding: "16px" }}>
-                <img src={logo} alt="Logo" style={{ width: "80%", height: "auto" }} />
+        <aside className="sidebar">
+            <div className="sidebar__logo">
+                <img src={logo} alt="Logo" />
             </div>
 
-            <RepositoryInfo
-                repositories={branches}
-                activeRepoId={activeRepoId}
-                onRepoClick={onRepoClick}
-            />
+            <section className="sidebar__section">
+                <div className="sidebar__sectionTitle">Repository</div>
+                <div className="sidebar__repoName" title={activeProject?.name || "-"}>
+                    {activeProject?.name || "-"}
+                </div>
+            </section>
 
-            <hr className="divider" />
+            <hr className="sidebar__divider" />
 
-            <UserInfo user={user} />
-        </div>
+            <div className="sidebar__user">
+                <UserInfo user={user} />
+            </div>
+        </aside>
     );
 }

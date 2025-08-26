@@ -1,0 +1,94 @@
+/* 컨테이너 */
+.sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 260px;                  /* 조금 넉넉하게 */
+    padding: 12px 14px;
+    border-right: 1px solid #eef0f3;
+    background: #fbfbfc;           /* 아주 옅은 톤 */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* 로고 영역 */
+.sidebar__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 8px 6px;
+}
+.sidebar__logo img {
+    width: 72%;
+    height: auto;
+    filter: none;
+    transition: transform .15s ease;
+}
+.sidebar__logo img:hover { transform: scale(1.02); }
+
+/* 섹션 공통 */
+.sidebar__section {
+    padding: 8px 6px 2px;
+}
+.sidebar__sectionTitle {
+    font-size: 11px;
+    font-weight: 700;
+    color: #7c8595;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: 6px;
+}
+
+/* 현재 리포지토리 이름 */
+.sidebar__repoName {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1f2937;
+    background: #ffffff;
+    border: 1px solid #edf0f5;
+    border-radius: 12px;
+    padding: 10px 12px;
+    box-shadow: 0 1px 0 rgba(17,24,39,.02);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 구분선 */
+.sidebar__divider {
+    height: 1px;
+    border: 0;
+    background: linear-gradient(90deg, rgba(0,0,0,0.06), rgba(0,0,0,0.02) 40%, rgba(0,0,0,0.06));
+    margin: 10px 0;
+}
+
+/* 유저 카드 래퍼(내부 마크업은 UserInfo 그대로) */
+.sidebar__user {
+    margin-top: 60vh;
+    padding: 6px 6px 0;
+}
+
+/* 반응형: 좁은 화면에서 살짝 줄임 */
+@media (max-width: 1280px) {
+    .sidebar { width: 240px; }
+    .sidebar__repoName { font-size: 14px; }
+}
+
+/* 다크모드 대응(선택) */
+@media (prefers-color-scheme: dark) {
+    .sidebar {
+        background: #0e0f12;
+        border-right-color: #1a1c22;
+    }
+    .sidebar__sectionTitle { color: #9aa3af; }
+    .sidebar__repoName {
+        color: #e6e7ea;
+        background: #0f1115;
+        border-color: #1b1e25;
+        box-shadow: none;
+    }
+    .sidebar__divider {
+        background: linear-gradient(90deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03) 40%, rgba(255,255,255,0.07));
+    }
+}
