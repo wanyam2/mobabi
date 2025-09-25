@@ -6,6 +6,7 @@ import {
 import BranchView from "./components/git/BranchView";
 import Sidebar from "./components/layout/Sidebar";
 import GitController from "./components/buttons/GitController";
+import GitAnimationDemo from "./components/demo/GitAnimationDemo"
 import { api } from "./api";
 
 const REPO_LS_KEY = "gitgui_repo_id";
@@ -28,6 +29,7 @@ function App() {
                     id: "feature/login",
                     name: "feature/login",
                     pushedCommits: [
+                        { id: 2, message: "로그인 UI 개발", committedAt: new Date().toISOString(), files: ["Login.jsx"] },
                         { id: 2, message: "로그인 UI 개발", committedAt: new Date().toISOString(), files: ["Login.jsx"] },
                         { id: 3, message: "로그인 API 연동", committedAt: new Date().toISOString(), files: ["auth.js"] },
                     ],
@@ -219,6 +221,13 @@ function App() {
                         pullCommits={pullCommits}
                         setPullCommits={setPullCommits}
                     />
+                </div>
+                <div style={{ padding: "16px 24px" }}>
+                <Heading size="sm" mb={2}>Git 동작 애니메이션 데모</Heading>
+                <Text fontSize="sm" color="gray.600" mb={3}>
+                Pull → Add → Commit → Push → Merge 과정을 시각적으로 체험해보세요.
+                </Text>
+                <GitAnimationDemo />
                 </div>
             </div>
         </ChakraProvider>
