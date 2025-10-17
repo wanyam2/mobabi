@@ -35,6 +35,8 @@ function reducer(state, action) {
             return { ...state, graphVersion: state.graphVersion + 1 };
         case "SET_TRANSFER":
             return { ...state, transferSnapshot: action.payload || null };
+        case "SET_ANIMATION":
+            return { ...state, animationMode: action.payload || "idle", animationTick: state.animationTick + 1 };
         case "SET_ANIMATION_START":
             return { ...state, animationMode: action.payload, animationTick: state.animationTick + 1 };
         case "SET_ANIMATION_END":

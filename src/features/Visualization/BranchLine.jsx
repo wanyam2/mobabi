@@ -20,7 +20,7 @@ export default function BranchLine({ lineSegments, remote }) {
                 return (
                     <path
                         key={key}
-                        className={`branch-path ${remote ? 'remote' : ''}`}
+                        className={`branch-path ${remote ? 'remote' : ''} ${info.animationClass || ''}`}
                         d={d}
                         style={{ stroke: info.color }}
                     />
