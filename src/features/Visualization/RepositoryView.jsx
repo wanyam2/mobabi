@@ -152,7 +152,10 @@ export default function RepositoryView() {
                     <h3>Local</h3>
                     <div className="commit-graph" style={{ height: `${graphHeight}px` }}>
                         {showStaging && (<StagingArea files={state.stagingArea} animationClass={stagingAnimClass} />)}
-                        <BranchLine lineSegments={localLineSegments} />
+                        <BranchLine lineSegments={Object.fromEntries(Object.entries(localLineSegments).map(([k, v]) => [k, {
+                            ...v,
+                            animationClass: state.animationMode === 'push' ? 'flow-push' : (state.animationMode === 'pull' ? 'flow-pull' : '')
+                        }]))} />
                         {Object.entries(localBranchLabels).map(([name, info]) => (
                             <div key={`label-l-${name}`} className="branch-label" style={{ left: info.point.x, top: info.point.y, borderColor: info.color, color: info.color }} onClick={() => handleOpenMergeModal(name)}>
                                 {name}
@@ -177,7 +180,13 @@ export default function RepositoryView() {
                 <div className="panel">
                     <h3>Remote</h3>
                     <div className="commit-graph" style={{ height: `${graphHeight}px` }}>
-                        <BranchLine lineSegments={remoteLineSegments} remote />
+                        <BranchLine
+                            lineSegments={Object.fromEntries(Object.entries(remoteLineSegments).map(([k, v]) => [k, {
+                                ...v,
+                                animationClass: state.animationMode === 'push' ? 'flow-push' : (state.animationMode === 'pull' ? 'flow-pull' : '')
+                            }]))}
+                            remote
+                        />
                         {Object.entries(remoteBranchLabels).map(([name, info]) => (
                             <div key={`label-r-${name}`} className="branch-label" style={{ left: info.point.x, top: info.point.y, borderColor: info.color, color: info.color, cursor: 'default' }}>
                                 {name}

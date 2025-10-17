@@ -371,6 +371,27 @@ body {
     transition: d 0.6s ease;
 }
 
+/* Branch flow animations for push/pull */
+.branch-path.flow-push {
+    stroke-dasharray: 6 10;
+    animation: flow-right 0.9s linear infinite;
+}
+
+.branch-path.flow-pull {
+    stroke-dasharray: 6 10;
+    animation: flow-left 0.9s linear infinite;
+}
+
+@keyframes flow-right {
+    from { stroke-dashoffset: 0; }
+    to   { stroke-dashoffset: -32; }
+}
+
+@keyframes flow-left {
+    from { stroke-dashoffset: 0; }
+    to   { stroke-dashoffset: 32; }
+}
+
 .branch-path.remote {
     stroke-dasharray: 4 4;
 }
